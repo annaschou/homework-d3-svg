@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+
+    <!-- some basic stuff  -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SVG with D3</title>
+
+    <!-- 
+      add your stylesheet 
+      base.css loads the templated css that should not be changed
+      you can tweak your own css in custom.css and it will override base.css
+      WARNING: the order of the stylesheets matters
+    -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="custom.css">
+
+    <!-- Step 2: add your d3 script below -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+  </head>
+  <body>
+    <h1>Wasted opportunities </h1>
+    <p><span style="color:grey;font-weight: bold;">Awarded</span> vs. <span style="color:blue;font-weight: bold;">missed</span> penalties during regular playtime at the last EUROs.</p>
+    <div id="my-svg-chart"></div>
+      
+    </div>
+
+    <!-- your JS code that uses d3 to manipulate data -->
+    <script>
+
+      // Step 3. data variables in percentage
+    let penaltiesAwarded = 100,
+        penaltyMissRate2016 = 22.2,
+        penaltyMissRate2021 = 43.7,
+        penaltyMissRate2025 = 25.0;
+
+    // Step 4. define data
+    let data = [penaltiesAwarded, penaltyMissRate2016, penaltiesAwarded, penaltyMissRate2021, penaltiesAwarded, penaltyMissRate2025];
+
+    // Step 5. transform data into usable scales
+    let scaleRadius = d3.scaleLinear()
+      .domain([0, penaltiesAwarded])
+      .range([0, 300]); 
+
+    // Step 6. create svg container 
+    let containerWidth = Math.max(825, window.innerWidth * 0.9);
+    let svgGoal = d3.select("#my-svg-chart")
+      .append("svg")
+      .attr("width", 825)
+      .attr("height", 500);
+
+    // Step 7. create SVG shapes and define position with ChatGPT because didn't work on mobile
+    let bars = svgGoal.selectAll("rect")
+      .data(data)
+      .join("rect")
+      .attr('x', function(d, i) {
+        const groupSpacing = 200;
+        if (i % 2 === 0) { 
+          return 100 + Math.floor(i / 2) * groupSpacing;
+        } else { 
+          return 100 + Math.floor((i - 1) / 2) * groupSpacing + 50;
+        }
+      })
+      .attr('y', (d) => 350 - scaleRadius(d))
+      .attr('width', 50)
+      .attr('height', (d) => scaleRadius(d)) 
+      .style('fill', function(d, i) {
+        return i % 2 === 0 ? "lightgray" : "blue";
+      })
+      .style('stroke', "black")
+      .style('stroke-width', 1);
+
+    // Step 8. Add labels
+      svgGoal.append('text')
+        .attr('x', 150)
+        .attr('y', 375)
+        .text('EURO 2016')
+        .style('text-anchor','middle')
+
+      svgGoal.append('text')
+        .attr('x', 350)
+        .attr('y', 375)
+        .text('EURO 2021')
+        .style('text-anchor','middle')
+
+      svgGoal.append('text')
+        .attr('x', 550)
+        .attr('y', 375)
+        .text('EURO 2025')
+        .style('text-anchor','middle')
+
+
+
+    </script>
+
+  </body>
+</html>

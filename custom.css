@@ -1,0 +1,33 @@
+
+/* add your custom css here */
+
+
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+p{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#my-svg-chart, svg {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+}
+#my-svg-chart g {
+    pointer-events: all;
+    cursor: pointer;
+
+}
+
+#my-svg-chart text {
+    /* display: none; */
+    font-family: sans-serif;    
+}
+
+#my-svg-chart .show text {
+    display: block;
+}
+
+
+
